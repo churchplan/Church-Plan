@@ -12,7 +12,7 @@ export default function SongCard({ song, onPress }: SongCardProps) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <View style={styles.header}>
-        <MaterialIcons name="music-note" size={24} color="#6366F1" />
+        <MaterialIcons name="music-note" size={24} color="#00D4AA" />
         <View style={styles.songInfo}>
           <Text style={styles.title}>{song.title}</Text>
           <Text style={styles.artist}>{song.artist}</Text>
@@ -20,7 +20,7 @@ export default function SongCard({ song, onPress }: SongCardProps) {
         <MaterialIcons name="keyboard-arrow-right" size={24} color="#CBD5E1" />
       </View>
       
-            <View style={styles.details}>
+      <View style={styles.details}>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Tom</Text>
           <Text style={styles.detailValue}>{song.key}</Text>

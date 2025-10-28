@@ -10,7 +10,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#6366F1',
+        tabBarActiveTintColor: '#00D4AA',
         tabBarInactiveTintColor: '#64748B',
         tabBarStyle: {
           backgroundColor: '#FFFFFF',
@@ -42,12 +42,21 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+            <Tabs.Screen
         name="planejar"
         options={{
           title: 'Planejar',
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="event-note" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="escalas"
+        options={{
+          title: 'Escalas',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="view-list" size={size} color={color} />
           ),
         }}
       />

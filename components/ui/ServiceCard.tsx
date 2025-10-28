@@ -12,7 +12,7 @@ export default function ServiceCard({ service, onPress }: ServiceCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Planejado': return '#F59E0B';
-      case 'Em Andamento': return '#10B981';
+      case 'Em Andamento': return '#00D4AA';
       case 'Concluído': return '#6B7280';
       default: return '#6B7280';
     }
@@ -43,7 +43,7 @@ export default function ServiceCard({ service, onPress }: ServiceCardProps) {
           <MaterialIcons 
             name={getTypeIcon(service.type)} 
             size={24} 
-            color="#6366F1" 
+            color="#00D4AA" 
           />
           <Text style={styles.title}>{service.title}</Text>
         </View>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   songsCount: {
     fontSize: 14,
-    color: '#6366F1',
+    color: '#4A90E2',
     fontWeight: '500',
   },
   teamCount: {

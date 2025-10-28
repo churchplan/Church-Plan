@@ -59,14 +59,14 @@ export default function MinhaAgendaScreen() {
       id: '1',
       name: 'Church Helper',
       icon: 'church',
-      color: '#6366F1',
+      color: '#00D4AA',
       description: 'Organização de cultos e equipes'
     },
     {
       id: '2',
       name: 'Finance',
       icon: 'account-balance',
-      color: '#10B981',
+      color: '#4A90E2',
       description: 'Gestão financeira da igreja'
     },
     {
@@ -80,7 +80,7 @@ export default function MinhaAgendaScreen() {
       id: '4',
       name: 'School',
       icon: 'school',
-      color: '#8B5CF6',
+      color: '#2E5984',
       description: 'Escola bíblica dominical'
     }
   ];
@@ -151,8 +151,8 @@ export default function MinhaAgendaScreen() {
 
   const getTipoColor = (tipo: string) => {
     switch (tipo) {
-      case 'cabecalho': return '#10B981';
-      case 'etapa': return '#6366F1';
+      case 'cabecalho': return '#00D4AA';
+      case 'etapa': return '#4A90E2';
       case 'musica': return '#F59E0B';
       default: return '#64748B';
     }
@@ -192,11 +192,11 @@ export default function MinhaAgendaScreen() {
         </TouchableOpacity>
       </View>
 
-            <View style={styles.pageHeader}>
+      <View style={styles.pageHeader}>
         <Text style={styles.title}>Sua Agenda</Text>
       </View>
 
-            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.topSpacer} />
         <View style={styles.section}>
           {myEvents.map((event) => (
@@ -207,16 +207,16 @@ export default function MinhaAgendaScreen() {
               >
                 <View style={styles.eventLeftSection}>
                   <View style={styles.eventIconContainer}>
-                    <MaterialIcons name="church" size={20} color="#6366F1" />
+                    <MaterialIcons name="church" size={20} color="#00D4AA" />
                   </View>
                   <View style={styles.eventInfo}>
                     <Text style={styles.eventTitle}>{event.title}</Text>
                     <View style={styles.eventMetaRow}>
-                      <MaterialIcons name="calendar-today" size={12} color="#6366F1" />
+                      <MaterialIcons name="calendar-today" size={12} color="#4A90E2" />
                       <Text style={styles.eventDate}>{event.date} às {event.time}</Text>
                     </View>
                     <View style={styles.eventMetaRow}>
-                      <MaterialIcons name="person" size={12} color="#10B981" />
+                      <MaterialIcons name="person" size={12} color="#00D4AA" />
                       <Text style={styles.eventRole}>{event.myRole}</Text>
                     </View>
                   </View>
@@ -224,7 +224,7 @@ export default function MinhaAgendaScreen() {
                 
                 <View style={styles.eventActions}>
                   <View style={[styles.statusBadge, { 
-                    backgroundColor: event.confirmed ? '#10B981' : '#F59E0B' 
+                    backgroundColor: event.confirmed ? '#00D4AA' : '#F59E0B' 
                   }]}>
                     <MaterialIcons 
                       name={event.confirmed ? "check-circle" : "schedule"} 
@@ -397,7 +397,7 @@ export default function MinhaAgendaScreen() {
                   <Text style={styles.appDescription}>{app.description}</Text>
                   {currentApp === app.name && (
                     <View style={styles.currentAppBadge}>
-                      <MaterialIcons name="check-circle" size={16} color="#10B981" />
+                      <MaterialIcons name="check-circle" size={16} color="#00D4AA" />
                       <Text style={styles.currentAppText}>Atual</Text>
                     </View>
                   )}
@@ -425,7 +425,7 @@ export default function MinhaAgendaScreen() {
                 <Text style={styles.blockInputLabel}>Data inicial</Text>
                 <TouchableOpacity style={styles.datePickerButton}>
                   <Text style={styles.datePickerText}>Selecione a data inicial</Text>
-                  <MaterialIcons name="calendar-today" size={20} color="#6366F1" />
+                  <MaterialIcons name="calendar-today" size={20} color="#4A90E2" />
                 </TouchableOpacity>
               </View>
 
@@ -433,7 +433,7 @@ export default function MinhaAgendaScreen() {
                 <Text style={styles.blockInputLabel}>Data final</Text>
                 <TouchableOpacity style={styles.datePickerButton}>
                   <Text style={styles.datePickerText}>Selecione a data final</Text>
-                  <MaterialIcons name="calendar-today" size={20} color="#6366F1" />
+                  <MaterialIcons name="calendar-today" size={20} color="#4A90E2" />
                 </TouchableOpacity>
                 <Text style={styles.optionalText}>(Opcional - para bloqueios de múltiplos dias)</Text>
               </View>
@@ -455,10 +455,10 @@ export default function MinhaAgendaScreen() {
                 
                 <View style={styles.timePeriodsContainer}>
                   {[
-                    { id: 'madrugada', label: 'Madrugada (00h ~ 06h)', color: '#6366F1' },
-                    { id: 'manha', label: 'Manhã (06h ~ 12h)', color: '#6366F1' },
-                    { id: 'tarde', label: 'Tarde (12h ~ 18h)', color: '#6366F1' },
-                    { id: 'noite', label: 'Noite (18h ~ 00h)', color: '#6366F1' }
+                    { id: 'madrugada', label: 'Madrugada (00h ~ 06h)', color: '#4A90E2' },
+                    { id: 'manha', label: 'Manhã (06h ~ 12h)', color: '#4A90E2' },
+                    { id: 'tarde', label: 'Tarde (12h ~ 18h)', color: '#4A90E2' },
+                    { id: 'noite', label: 'Noite (18h ~ 00h)', color: '#4A90E2' }
                   ].map((period) => (
                     <TouchableOpacity key={period.id} style={styles.periodCheckbox}>
                       <MaterialIcons name="check-box" size={24} color={period.color} />
@@ -487,7 +487,7 @@ export default function MinhaAgendaScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FEFEFE',
+    backgroundColor: '#F5FCFF',
   },
   header: {
     flexDirection: 'row',
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#6366F1',
+    backgroundColor: '#00D4AA',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 6,
@@ -559,7 +559,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#6366F1',
+    backgroundColor: '#2E5984',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -644,7 +644,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F0F4FF',
+    backgroundColor: '#F0FDF4',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -666,12 +666,12 @@ const styles = StyleSheet.create({
   },
   eventDate: {
     fontSize: 13,
-    color: '#6366F1',
+    color: '#4A90E2',
     fontWeight: '500',
   },
   eventRole: {
     fontSize: 13,
-    color: '#10B981',
+    color: '#00D4AA',
     fontWeight: '500',
   },
   eventActions: {
@@ -701,7 +701,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#F1F5F9',
   },
   confirmButton: {
-    backgroundColor: '#10B981',
+    backgroundColor: '#00D4AA',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -913,7 +913,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   appCardSelected: {
-    borderColor: '#10B981',
+    borderColor: '#00D4AA',
     backgroundColor: '#F0FDF4',
   },
   appIcon: {
@@ -931,7 +931,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   appNameSelected: {
-    color: '#10B981',
+    color: '#00D4AA',
   },
   appDescription: {
     fontSize: 12,
@@ -953,7 +953,7 @@ const styles = StyleSheet.create({
   currentAppText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#10B981',
+    color: '#00D4AA',
   },
   dateOptions: {
     gap: 8,
@@ -967,7 +967,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
   },
   dateOptionSelected: {
-    borderColor: '#6366F1',
+    borderColor: '#4A90E2',
     backgroundColor: '#EEF2FF',
   },
   dateOptionText: {
@@ -975,8 +975,8 @@ const styles = StyleSheet.create({
     color: '#64748B',
     textAlign: 'center',
   },
-    dateOptionTextSelected: {
-    color: '#6366F1',
+  dateOptionTextSelected: {
+    color: '#4A90E2',
     fontWeight: '600',
   },
   addBlockButtonModal: {
@@ -1110,7 +1110,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    backgroundColor: '#6366F1',
+    backgroundColor: '#00D4AA',
   },
   blockConfirmText: {
     fontSize: 16,
