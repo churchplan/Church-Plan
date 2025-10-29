@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -253,7 +253,7 @@ export default function PlanilhaEscalasScreen() {
                           style={styles.addButton}
                           onPress={() => openAddMember(team.id, position.id)}
                         >
-                          <MaterialIcons name="add" size={16} color="#00D4AA" />
+                          <MaterialIcons name="add" size={16} color="#10B981" />
                           <Text style={styles.addButtonText}>Adicionar</Text>
                         </TouchableOpacity>
                       </View>
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#00D4AA',
+    backgroundColor: '#10B981',
   },
   backButton: {
     padding: 8,
@@ -446,12 +446,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     gap: 4,
     borderWidth: 1,
-    borderColor: '#00D4AA',
+    borderColor: '#10B981',
     borderStyle: 'dashed',
   },
   addButtonText: {
     fontSize: 12,
-    color: '#00D4AA',
+    color: '#10B981',
     fontWeight: '600',
   },
   modalOverlay: {
@@ -511,7 +511,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#00D4AA',
+    backgroundColor: '#10B981',
     justifyContent: 'center',
     alignItems: 'center',
   },

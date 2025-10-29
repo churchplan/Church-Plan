@@ -1554,12 +1554,22 @@ export default function PlanejarScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.title}>Planejar</Text>
-          <Text style={styles.subtitle}>Organize cultos e eventos</Text>
+        <View style={styles.headerTop}>
+          <View>
+            <Text style={styles.title}>Planejar</Text>
+            <Text style={styles.subtitle}>Organize cultos e eventos</Text>
+          </View>
+          <TouchableOpacity style={styles.addButton} onPress={createNewService}>
+            <MaterialIcons name="add" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.addButton} onPress={createNewService}>
-          <MaterialIcons name="add" size={24} color="#FFFFFF" />
+        
+        <TouchableOpacity 
+          style={styles.planilhaButton}
+          onPress={() => router.push('/planilha-escalas' as any)}
+        >
+          <MaterialIcons name="grid-on" size={20} color="#FFFFFF" />
+          <Text style={styles.planilhaButtonText}>Planilha de Escalas</Text>
         </TouchableOpacity>
       </View>
 
@@ -1737,15 +1747,32 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    header: {
     paddingHorizontal: 20,
     paddingVertical: 16,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#E2E8F0',
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  planilhaButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#10B981',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    gap: 6,
+  },
+  planilhaButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     fontSize: 28,
