@@ -33,7 +33,7 @@ export default function TabLayout() {
         },
       }}
     >
-                  <Tabs.Screen
+      <Tabs.Screen
         name="index"
         options={{
           title: 'Agenda',
@@ -42,21 +42,12 @@ export default function TabLayout() {
           ),
         }}
       />
-            <Tabs.Screen
+      <Tabs.Screen
         name="planejar"
         options={{
           title: 'Planejar',
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="event-note" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="escalas"
-        options={{
-          title: 'Escalas',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="view-list" size={size} color={color} />
           ),
         }}
       />
