@@ -211,7 +211,7 @@ export default function PlanilhaEscalasScreen() {
             </View>
           </View>
           <TouchableOpacity style={styles.autoFillButton} onPress={autoFillScales}>
-            <MaterialIcons name="auto-fix-high" size={18} color="#FFFFFF" />
+            <MaterialIcons name="auto-fix-high" size={14} color="#FFFFFF" />
             <Text style={styles.autoFillButtonText}>Preencher Automático</Text>
           </TouchableOpacity>
         </View>
@@ -389,14 +389,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#6366F1',
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 8,
-    gap: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 6,
+    gap: 3,
   },
   autoFillButtonText: {
     color: '#FFFFFF',
-    fontSize: 13,
+    fontSize: 10,
     fontWeight: '600',
   },
   legendItem: {
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   dateCellHeader: {
-    width: 100,
+    width: 110,
     backgroundColor: '#1E293B',
     justifyContent: 'center',
   },
@@ -451,11 +451,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateCell: {
-    width: 100,
+    width: 110,
     backgroundColor: '#F8FAFC',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
+    minHeight: 100,
   },
   sendDateButton: {
     flexDirection: 'row',
@@ -473,7 +474,7 @@ const styles = StyleSheet.create({
   },
   positionCell: {
     width: 140,
-    minHeight: 80,
+    minHeight: 100,
     backgroundColor: '#FFFFFF',
   },
   headerText: {
@@ -497,11 +498,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#F8FAFC',
     paddingHorizontal: 8,
-    paddingVertical: 6,
+    paddingVertical: 7,
     borderRadius: 4,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     gap: 4,
+    minHeight: 32,
   },
   memberName: {
     fontSize: 11,
