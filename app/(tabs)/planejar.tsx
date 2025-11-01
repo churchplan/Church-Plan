@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Alert, Modal, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import ServiceCard from '../../components/ui/ServiceCard';
 import MusicSelector from '../../components/MusicSelector';
 import { worshipService } from '../../services/worshipService';
@@ -53,6 +54,7 @@ interface TemplateOptions {
 }
 
 export default function PlanejarScreen() {
+  const router = useRouter();
   const [currentView, setCurrentView] = useState<'list' | 'details'>('list');
   const [selectedServiceId, setSelectedServiceId] = useState<string>('');
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -1566,7 +1568,7 @@ export default function PlanejarScreen() {
         
         <TouchableOpacity 
           style={styles.planilhaButton}
-          onPress={() => router.push('/planilha-escalas' as any)}
+          onPress={() => router.push('/planilha-escalas')}
         >
           <MaterialIcons name="grid-on" size={20} color="#FFFFFF" />
           <Text style={styles.planilhaButtonText}>Planilha de Escalas</Text>
