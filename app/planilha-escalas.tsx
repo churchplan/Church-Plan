@@ -155,6 +155,25 @@ export default function PlanilhaEscalasScreen() {
     }));
   };
 
+  const autoFillScales = () => {
+    if (Platform.OS === 'web') {
+      console.log('Preencher escalas automaticamente com IA');
+    } else {
+      Alert.alert('Preencher Automático', 'A IA irá preencher as escalas automaticamente com base na disponibilidade dos membros.');
+    }
+  };
+
+  const sendScaleToDate = (dateId: string, date: string) => {
+    if (Platform.OS === 'web') {
+      console.log('Enviar escala da data:', date);
+    } else {
+      Alert.alert('Enviar Escala', `Enviar convites para todos os membros escalados em ${date}?`, [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Enviar', onPress: () => console.log('Escala enviada:', date) }
+      ]);
+    }
+  };
+
   const filteredMembers = availableMembers.filter(member =>
     searchMember === '' || 
     member.name.toLowerCase().includes(searchMember.toLowerCase())
@@ -173,20 +192,28 @@ export default function PlanilhaEscalasScreen() {
       </View>
 
       <View style={styles.infoBar}>
-        <Text style={styles.infoText}>Ministério de Louvor - Escalas Mensais</Text>
-        <View style={styles.legendContainer}>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: '#10B981' }]} />
-            <Text style={styles.legendText}>Aceito</Text>
+        <View style={styles.infoBarTop}>
+          <View style={styles.infoBarLeft}>
+            <Text style={styles.infoText}>Ministério de Louvor - Escalas Mensais</Text>
+            <View style={styles.legendContainer}>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: '#10B981' }]} />
+                <Text style={styles.legendText}>Aceito</Text>
+              </View>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: '#F59E0B' }]} />
+                <Text style={styles.legendText}>Pendente</Text>
+              </View>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: '#EF4444' }]} />
+                <Text style={styles.legendText}>Recusado</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: '#F59E0B' }]} />
-            <Text style={styles.legendText}>Pendente</Text>
-          </View>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: '#EF4444' }]} />
-            <Text style={styles.legendText}>Recusado</Text>
-          </View>
+          <TouchableOpacity style={styles.autoFillButton} onPress={autoFillScales}>
+            <MaterialIcons name="auto-fix-high" size={18} color="#FFFFFF" />
+            <Text style={styles.autoFillButtonText}>Preencher Automático</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -211,6 +238,13 @@ export default function PlanilhaEscalasScreen() {
                 {/* Coluna de Data */}
                 <View style={[styles.tableCell, styles.dateCell]}>
                   <Text style={styles.dateText}>{dateScale.date}</Text>
+                  <TouchableOpacity 
+                    style={styles.sendDateButton}
+                    onPress={() => sendScaleToDate(dateScale.id, dateScale.date)}
+                  >
+                    <MaterialIcons name="send" size={14} color="#FFFFFF" />
+                    <Text style={styles.sendDateButtonText}>Enviar</Text>
+                  </TouchableOpacity>
                 </View>
 
                 {/* Colunas de Posições */}
@@ -332,6 +366,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E2E8F0',
   },
+  infoBarTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 16,
+  },
+  infoBarLeft: {
+    flex: 1,
+  },
   infoText: {
     fontSize: 16,
     fontWeight: '600',
@@ -341,6 +384,20 @@ const styles = StyleSheet.create({
   legendContainer: {
     flexDirection: 'row',
     gap: 16,
+  },
+  autoFillButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#6366F1',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 8,
+    gap: 6,
+  },
+  autoFillButtonText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '600',
   },
   legendItem: {
     flexDirection: 'row',
@@ -397,6 +454,22 @@ const styles = StyleSheet.create({
     width: 100,
     backgroundColor: '#F8FAFC',
     justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+  },
+  sendDateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#10B981',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    gap: 3,
+  },
+  sendDateButtonText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: '600',
   },
   positionCell: {
     width: 140,
@@ -423,8 +496,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#F8FAFC',
-    paddingHorizontal: 6,
-    paddingVertical: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     borderRadius: 4,
     borderWidth: 1,
     borderColor: '#E2E8F0',
