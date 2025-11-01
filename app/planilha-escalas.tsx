@@ -10,16 +10,12 @@ interface ScaleMember {
   status: 'accepted' | 'declined' | 'pending';
 }
 
-interface Position {
+interface DateScale {
   id: string;
-  name: string;
-  members: ScaleMember[];
-}
-
-interface Team {
-  id: string;
-  name: string;
-  positions: Position[];
+  date: string;
+  positions: {
+    [key: string]: ScaleMember[];
+  };
 }
 
 export default function PlanilhaEscalasScreen() {
@@ -40,67 +36,63 @@ export default function PlanilhaEscalasScreen() {
     { id: '8', name: 'Paulo Santos', team: 'Técnica', role: 'Iluminação' },
   ];
 
-  const [scaleData, setScaleData] = useState<Team[]>([
+  const positions = ['Vocal', 'Guitarra', 'Bateria', 'Teclado', 'Baixo'];
+
+  const [scaleData, setScaleData] = useState<DateScale[]>([
     {
       id: '1',
-      name: 'Ministério de Louvor',
-      positions: [
-        { 
-          id: '1', 
-          name: 'Vocal', 
-          members: [
-            { id: '1', name: 'João Silva', status: 'accepted' },
-            { id: '2', name: 'Maria Santos', status: 'pending' }
-          ]
-        },
-        { 
-          id: '2', 
-          name: 'Guitarra', 
-          members: [
-            { id: '3', name: 'Pedro Costa', status: 'accepted' }
-          ]
-        },
-        { 
-          id: '3', 
-          name: 'Bateria', 
-          members: [
-            { id: '4', name: 'Ana Lima', status: 'declined' }
-          ]
-        },
-        { id: '4', name: 'Teclado', members: [] },
-        { id: '5', name: 'Baixo', members: [] },
-      ]
+      date: '07/09/2024',
+      positions: {
+        'Vocal': [
+          { id: '1', name: 'João Silva', status: 'accepted' },
+          { id: '2', name: 'Maria Santos', status: 'pending' }
+        ],
+        'Guitarra': [
+          { id: '3', name: 'Pedro Costa', status: 'accepted' }
+        ],
+        'Bateria': [
+          { id: '4', name: 'Ana Lima', status: 'declined' }
+        ],
+        'Teclado': [],
+        'Baixo': []
+      }
     },
     {
       id: '2',
-      name: 'Equipe Técnica',
-      positions: [
-        { 
-          id: '6', 
-          name: 'Som', 
-          members: [
-            { id: '6', name: 'Roberto Silva', status: 'accepted' }
-          ]
-        },
-        { 
-          id: '7', 
-          name: 'Vídeo', 
-          members: [
-            { id: '7', name: 'Fernanda Costa', status: 'pending' }
-          ]
-        },
-        { id: '8', name: 'Iluminação', members: [] },
-        { id: '9', name: 'Transmissão', members: [] },
-      ]
+      date: '14/09/2024',
+      positions: {
+        'Vocal': [
+          { id: '5', name: 'Carlos Mendes', status: 'pending' }
+        ],
+        'Guitarra': [],
+        'Bateria': [],
+        'Teclado': [
+          { id: '2', name: 'Maria Santos', status: 'accepted' }
+        ],
+        'Baixo': []
+      }
     },
     {
       id: '3',
-      name: 'Ministração',
-      positions: [
-        { id: '10', name: 'Pastor', members: [] },
-        { id: '11', name: 'Pregador', members: [] },
-        { id: '12', name: 'Intercessão', members: [] },
-      ]
+      date: '21/09/2024',
+      positions: {
+        'Vocal': [],
+        'Guitarra': [],
+        'Bateria': [],
+        'Teclado': [],
+        'Baixo': []
+      }
+    },
+    {
+      id: '4',
+      date: '28/09/2024',
+      positions: {
+        'Vocal': [],
+        'Guitarra': [],
+        'Bateria': [],
+        'Teclado': [],
+        'Baixo': []
+      }
     }
   ]);
 
@@ -113,8 +105,8 @@ export default function PlanilhaEscalasScreen() {
     }
   };
 
-  const openAddMember = (teamId: string, positionId: string) => {
-    setSelectedPosition({ teamId, positionId });
+  const openAddMember = (dateId: string, positionName: string) => {
+    setSelectedPosition({ teamId: dateId, positionId: positionName });
     setShowAddMemberModal(true);
   };
 
@@ -127,22 +119,20 @@ export default function PlanilhaEscalasScreen() {
       status: 'pending'
     };
 
-    setScaleData(prev => prev.map(team => {
-      if (team.id === selectedPosition.teamId) {
+    setScaleData(prev => prev.map(dateScale => {
+      if (dateScale.id === selectedPosition.teamId) {
         return {
-          ...team,
-          positions: team.positions.map(pos => {
-            if (pos.id === selectedPosition.positionId) {
-              return {
-                ...pos,
-                members: [...pos.members, newMember]
-              };
-            }
-            return pos;
-          })
+          ...dateScale,
+          positions: {
+            ...dateScale.positions,
+            [selectedPosition.positionId]: [
+              ...dateScale.positions[selectedPosition.positionId],
+              newMember
+            ]
+          }
         };
       }
-      return team;
+      return dateScale;
     }));
 
     setShowAddMemberModal(false);
@@ -150,23 +140,18 @@ export default function PlanilhaEscalasScreen() {
     setSelectedPosition(null);
   };
 
-  const removeMember = (teamId: string, positionId: string, memberId: string) => {
-    setScaleData(prev => prev.map(team => {
-      if (team.id === teamId) {
+  const removeMember = (dateId: string, positionName: string, memberId: string) => {
+    setScaleData(prev => prev.map(dateScale => {
+      if (dateScale.id === dateId) {
         return {
-          ...team,
-          positions: team.positions.map(pos => {
-            if (pos.id === positionId) {
-              return {
-                ...pos,
-                members: pos.members.filter(m => m.id !== memberId)
-              };
-            }
-            return pos;
-          })
+          ...dateScale,
+          positions: {
+            ...dateScale.positions,
+            [positionName]: dateScale.positions[positionName].filter(m => m.id !== memberId)
+          }
         };
       }
-      return team;
+      return dateScale;
     }));
   };
 
@@ -188,7 +173,7 @@ export default function PlanilhaEscalasScreen() {
       </View>
 
       <View style={styles.infoBar}>
-        <Text style={styles.infoText}>Culto Dominical - 07/09/2024</Text>
+        <Text style={styles.infoText}>Ministério de Louvor - Escalas Mensais</Text>
         <View style={styles.legendContainer}>
           <View style={styles.legendItem}>
             <View style={[styles.legendDot, { backgroundColor: '#10B981' }]} />
@@ -205,67 +190,64 @@ export default function PlanilhaEscalasScreen() {
         </View>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {scaleData.map((team) => (
-          <View key={team.id} style={styles.teamSection}>
-            <View style={styles.teamHeader}>
-              <Text style={styles.teamName}>{team.name}</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={true} style={styles.horizontalScroll}>
+        <View style={styles.tableContainer}>
+          {/* Cabeçalho da Tabela */}
+          <View style={styles.tableHeader}>
+            <View style={[styles.tableCell, styles.dateCellHeader]}>
+              <Text style={styles.headerText}>Data</Text>
             </View>
-
-            <ScrollView 
-              horizontal 
-              showsHorizontalScrollIndicator={true}
-              style={styles.positionsScroll}
-            >
-              <View style={styles.gridContainer}>
-                {/* Header da Grade */}
-                <View style={styles.gridRow}>
-                  {team.positions.map((position) => (
-                    <View key={position.id} style={styles.gridCell}>
-                      <Text style={styles.positionName}>{position.name}</Text>
-                    </View>
-                  ))}
-                </View>
-
-                {/* Conteúdo da Grade */}
-                <View style={styles.gridRow}>
-                  {team.positions.map((position) => (
-                    <View key={position.id} style={styles.gridCell}>
-                      <View style={styles.membersContainer}>
-                        {position.members.map((member) => (
-                          <View 
-                            key={member.id} 
-                            style={[
-                              styles.memberChip,
-                              { borderColor: getStatusColor(member.status) }
-                            ]}
-                          >
-                            <Text style={styles.memberName}>{member.name}</Text>
-                            <TouchableOpacity 
-                              onPress={() => removeMember(team.id, position.id, member.id)}
-                            >
-                              <MaterialIcons name="close" size={14} color="#64748B" />
-                            </TouchableOpacity>
-                          </View>
-                        ))}
-                        
-                        <TouchableOpacity 
-                          style={styles.addButton}
-                          onPress={() => openAddMember(team.id, position.id)}
-                        >
-                          <MaterialIcons name="add" size={16} color="#10B981" />
-                          <Text style={styles.addButtonText}>Adicionar</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  ))}
-                </View>
+            {positions.map((position, index) => (
+              <View key={index} style={[styles.tableCell, styles.positionCellHeader]}>
+                <Text style={styles.headerText}>{position}</Text>
               </View>
-            </ScrollView>
+            ))}
           </View>
-        ))}
 
-        <View style={styles.emptySpace} />
+          {/* Linhas de Dados */}
+          <ScrollView style={styles.tableBody} showsVerticalScrollIndicator={false}>
+            {scaleData.map((dateScale) => (
+              <View key={dateScale.id} style={styles.tableRow}>
+                {/* Coluna de Data */}
+                <View style={[styles.tableCell, styles.dateCell]}>
+                  <Text style={styles.dateText}>{dateScale.date}</Text>
+                </View>
+
+                {/* Colunas de Posições */}
+                {positions.map((position, index) => (
+                  <View key={index} style={[styles.tableCell, styles.positionCell]}>
+                    <View style={styles.membersContainer}>
+                      {dateScale.positions[position].map((member) => (
+                        <View 
+                          key={member.id} 
+                          style={[
+                            styles.memberChip,
+                            { borderLeftWidth: 3, borderLeftColor: getStatusColor(member.status) }
+                          ]}
+                        >
+                          <Text style={styles.memberName} numberOfLines={1}>{member.name}</Text>
+                          <TouchableOpacity 
+                            onPress={() => removeMember(dateScale.id, position, member.id)}
+                          >
+                            <MaterialIcons name="close" size={14} color="#64748B" />
+                          </TouchableOpacity>
+                        </View>
+                      ))}
+                      
+                      <TouchableOpacity 
+                        style={styles.addButton}
+                        onPress={() => openAddMember(dateScale.id, position)}
+                      >
+                        <MaterialIcons name="add" size={16} color="#10B981" />
+                        <Text style={styles.addButtonText}>Adicionar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </ScrollView>
+        </View>
       </ScrollView>
 
       {/* Modal Adicionar Membro */}
@@ -374,64 +356,82 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#64748B',
   },
-  content: {
+  horizontalScroll: {
     flex: 1,
   },
-  teamSection: {
-    marginBottom: 24,
+  tableContainer: {
     backgroundColor: '#FFFFFF',
   },
-  teamHeader: {
-    backgroundColor: '#F1F5F9',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#1E293B',
     borderBottomWidth: 2,
+    borderBottomColor: '#00D4AA',
+  },
+  tableBody: {
+    flex: 1,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
     borderBottomColor: '#E2E8F0',
   },
-  teamName: {
-    fontSize: 18,
+  tableCell: {
+    borderRightWidth: 1,
+    borderRightColor: '#E2E8F0',
+    padding: 10,
+    justifyContent: 'flex-start',
+  },
+  dateCellHeader: {
+    width: 100,
+    backgroundColor: '#1E293B',
+    justifyContent: 'center',
+  },
+  positionCellHeader: {
+    width: 140,
+    backgroundColor: '#1E293B',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dateCell: {
+    width: 100,
+    backgroundColor: '#F8FAFC',
+    justifyContent: 'center',
+  },
+  positionCell: {
+    width: 140,
+    minHeight: 80,
+    backgroundColor: '#FFFFFF',
+  },
+  headerText: {
+    fontSize: 13,
     fontWeight: '700',
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+  dateText: {
+    fontSize: 13,
+    fontWeight: '600',
     color: '#1E293B',
-  },
-  positionsScroll: {
-    padding: 16,
-  },
-  gridContainer: {
-    flexDirection: 'column',
-  },
-  gridRow: {
-    flexDirection: 'row',
-  },
-  gridCell: {
-    width: 160,
-    minHeight: 200,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    padding: 12,
-    backgroundColor: '#FEFEFE',
-  },
-  positionName: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#1E293B',
-    marginBottom: 12,
     textAlign: 'center',
   },
   membersContainer: {
-    gap: 8,
+    gap: 6,
   },
   memberChip: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#F8FAFC',
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 6,
-    borderWidth: 2,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 4,
   },
   memberName: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#1E293B',
     fontWeight: '500',
     flex: 1,
@@ -441,16 +441,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F0FDF4',
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    borderRadius: 6,
-    gap: 4,
+    paddingVertical: 6,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+    gap: 3,
     borderWidth: 1,
     borderColor: '#10B981',
     borderStyle: 'dashed',
   },
   addButtonText: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#10B981',
     fontWeight: '600',
   },
@@ -533,7 +533,5 @@ const styles = StyleSheet.create({
     color: '#64748B',
     marginTop: 2,
   },
-  emptySpace: {
-    height: 100,
-  },
+
 });
