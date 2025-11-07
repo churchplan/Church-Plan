@@ -22,7 +22,10 @@ interface DateScale {
 export default function PlanilhaEscalasScreen() {
   const router = useRouter();
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<{ teamId: string; positionId: string } | null>(null);
+  const [selectedDateForSend, setSelectedDateForSend] = useState<DateScale | null>(null);
+  const [selectedMembersToSend, setSelectedMembersToSend] = useState<string[]>([]);
   const [searchMember, setSearchMember] = useState('');
 
   // Mock de membros disponíveis
@@ -168,14 +171,71 @@ export default function PlanilhaEscalasScreen() {
     }
   };
 
-  const sendScaleToDate = (dateId: string, date: string) => {
+  const openSendModal = (dateId: string) => {
+    const dateScale = scaleData.find(d => d.id === dateId);
+    if (!dateScale) return;
+    
+    setSelectedDateForSend(dateScale);
+    // Pré-selecionar todos os membros
+    const allMembers: string[] = [];
+    Object.values(dateScale.positions).forEach(members => {
+      members.forEach(member => {
+        if (!allMembers.includes(member.id)) {
+          allMembers.push(member.id);
+        }
+      });
+    });
+    setSelectedMembersToSend(allMembers);
+    setShowSendModal(true);
+  };
+
+  const toggleMemberSelection = (memberId: string) => {
+    setSelectedMembersToSend(prev => {
+      if (prev.includes(memberId)) {
+        return prev.filter(id => id !== memberId);
+      } else {
+        return [...prev, memberId];
+      }
+    });
+  };
+
+  const selectAllMembers = () => {
+    if (!selectedDateForSend) return;
+    const allMembers: string[] = [];
+    Object.values(selectedDateForSend.positions).forEach(members => {
+      members.forEach(member => {
+        if (!allMembers.includes(member.id)) {
+          allMembers.push(member.id);
+        }
+      });
+    });
+    setSelectedMembersToSend(allMembers);
+  };
+
+  const deselectAllMembers = () => {
+    setSelectedMembersToSend([]);
+  };
+
+  const sendSelectedMembers = () => {
+    if (!selectedDateForSend || selectedMembersToSend.length === 0) return;
+    
     if (Platform.OS === 'web') {
-      console.log('Enviar escala da data:', date);
+      console.log('Enviando para membros:', selectedMembersToSend);
     } else {
-      Alert.alert('Enviar Escala', `Enviar convites para todos os membros escalados em ${date}?`, [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Enviar', onPress: () => console.log('Escala enviada:', date) }
-      ]);
+      Alert.alert(
+        'Enviar Escala',
+        `Enviar convites para ${selectedMembersToSend.length} membro(s) em ${selectedDateForSend.date}?`,
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { 
+            text: 'Enviar', 
+            onPress: () => {
+              console.log('Escala enviada para:', selectedMembersToSend);
+              setShowSendModal(false);
+            }
+          }
+        ]
+      );
     }
   };
 
@@ -246,7 +306,7 @@ export default function PlanilhaEscalasScreen() {
                   <Text style={styles.eventNameText} numberOfLines={2}>{dateScale.eventName}</Text>
                   <TouchableOpacity 
                     style={styles.sendDateButton}
-                    onPress={() => sendScaleToDate(dateScale.id, dateScale.date)}
+                    onPress={() => openSendModal(dateScale.id)}
                   >
                     <MaterialIcons name="send" size={14} color="#FFFFFF" />
                     <Text style={styles.sendDateButtonText}>Enviar</Text>
@@ -289,6 +349,107 @@ export default function PlanilhaEscalasScreen() {
           </ScrollView>
         </View>
       </ScrollView>
+
+      {/* Modal Enviar Escala */}
+      <Modal visible={showSendModal} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Enviar Escala</Text>
+              <TouchableOpacity onPress={() => setShowSendModal(false)}>
+                <MaterialIcons name="close" size={24} color="#64748B" />
+              </TouchableOpacity>
+            </View>
+
+            {selectedDateForSend && (
+              <View style={styles.sendModalInfo}>
+                <Text style={styles.sendModalDate}>{selectedDateForSend.date}</Text>
+                <Text style={styles.sendModalEvent}>{selectedDateForSend.eventName}</Text>
+              </View>
+            )}
+
+            <View style={styles.selectionActions}>
+              <TouchableOpacity 
+                style={styles.selectionActionButton}
+                onPress={selectAllMembers}
+              >
+                <MaterialIcons name="check-circle" size={18} color="#10B981" />
+                <Text style={styles.selectionActionText}>Selecionar Todos</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.selectionActionButton}
+                onPress={deselectAllMembers}
+              >
+                <MaterialIcons name="cancel" size={18} color="#EF4444" />
+                <Text style={styles.selectionActionText}>Desmarcar Todos</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.sendMembersList}>
+              {selectedDateForSend && Object.entries(selectedDateForSend.positions).map(([position, members]) => (
+                members.length > 0 && (
+                  <View key={position} style={styles.sendPositionGroup}>
+                    <Text style={styles.sendPositionTitle}>{position}</Text>
+                    {members.map((member) => (
+                      <TouchableOpacity
+                        key={member.id}
+                        style={styles.sendMemberOption}
+                        onPress={() => toggleMemberSelection(member.id)}
+                      >
+                        <View style={styles.checkboxContainer}>
+                          <View style={[
+                            styles.checkbox,
+                            selectedMembersToSend.includes(member.id) && styles.checkboxChecked
+                          ]}>
+                            {selectedMembersToSend.includes(member.id) && (
+                              <MaterialIcons name="check" size={16} color="#FFFFFF" />
+                            )}
+                          </View>
+                        </View>
+                        <View style={styles.memberAvatar}>
+                          <Text style={styles.memberInitial}>
+                            {member.name.charAt(0)}
+                          </Text>
+                        </View>
+                        <View style={styles.memberInfo}>
+                          <Text style={styles.memberOptionName}>{member.name}</Text>
+                          <Text style={styles.memberRole}>{position}</Text>
+                        </View>
+                        <View style={[
+                          styles.statusBadge,
+                          { backgroundColor: getStatusColor(member.status) }
+                        ]}>
+                          <Text style={styles.statusBadgeText}>
+                            {member.status === 'accepted' ? 'Aceito' : 
+                             member.status === 'declined' ? 'Recusado' : 'Pendente'}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )
+              ))}
+            </ScrollView>
+
+            <View style={styles.sendModalFooter}>
+              <Text style={styles.selectedCount}>
+                {selectedMembersToSend.length} membro(s) selecionado(s)
+              </Text>
+              <TouchableOpacity 
+                style={[
+                  styles.sendConfirmButton,
+                  selectedMembersToSend.length === 0 && styles.sendConfirmButtonDisabled
+                ]}
+                onPress={sendSelectedMembers}
+                disabled={selectedMembersToSend.length === 0}
+              >
+                <MaterialIcons name="send" size={18} color="#FFFFFF" />
+                <Text style={styles.sendConfirmButtonText}>Enviar Convites</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Modal Adicionar Membro */}
       <Modal visible={showAddMemberModal} transparent animationType="slide">
@@ -620,6 +781,127 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#64748B',
     marginTop: 2,
+  },
+  sendModalInfo: {
+    backgroundColor: '#F0FDF4',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: '#10B981',
+  },
+  sendModalDate: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1E293B',
+    marginBottom: 4,
+  },
+  sendModalEvent: {
+    fontSize: 14,
+    color: '#64748B',
+  },
+  selectionActions: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 16,
+  },
+  selectionActionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F8FAFC',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 6,
+  },
+  selectionActionText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  sendMembersList: {
+    maxHeight: 300,
+  },
+  sendPositionGroup: {
+    marginBottom: 20,
+  },
+  sendPositionTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#1E293B',
+    marginBottom: 8,
+    paddingLeft: 4,
+  },
+  sendMemberOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    marginBottom: 8,
+    gap: 12,
+  },
+  checkboxContainer: {
+    marginRight: 4,
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#CBD5E1',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#10B981',
+    borderColor: '#10B981',
+  },
+  statusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  statusBadgeText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  sendModalFooter: {
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
+  },
+  selectedCount: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#64748B',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  sendConfirmButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#10B981',
+    paddingVertical: 14,
+    borderRadius: 8,
+    gap: 8,
+  },
+  sendConfirmButtonDisabled: {
+    backgroundColor: '#CBD5E1',
+  },
+  sendConfirmButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
   },
 
 });
