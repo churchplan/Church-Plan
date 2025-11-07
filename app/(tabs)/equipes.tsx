@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Alert, Modal, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { worshipService } from '../../services/worshipService';
 
 interface CustomTeam {
@@ -26,6 +27,7 @@ interface TeamMember {
 }
 
 export default function EquipesScreen() {
+  const router = useRouter();
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -227,6 +229,16 @@ export default function EquipesScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Botão Ver Pontuações */}
+      <TouchableOpacity 
+        style={styles.scoreButton}
+        onPress={() => router.push('/pontuacoes-equipe')}
+      >
+        <MaterialIcons name="emoji-events" size={24} color="#FFFFFF" />
+        <Text style={styles.scoreButtonText}>Ver Pontuações da Equipe</Text>
+        <MaterialIcons name="arrow-forward" size={20} color="#FFFFFF" />
+      </TouchableOpacity>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Search Bar */}
@@ -1028,5 +1040,29 @@ const styles = StyleSheet.create({
   },
   emptySpace: {
     height: 100,
+  },
+  scoreButton: {
+    backgroundColor: '#F59E0B',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 16,
+    marginBottom: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 16,
+    gap: 12,
+    elevation: 3,
+    shadowColor: '#F59E0B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+  },
+  scoreButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    flex: 1,
   },
 });
