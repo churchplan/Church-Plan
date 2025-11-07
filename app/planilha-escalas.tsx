@@ -8,6 +8,7 @@ interface ScaleMember {
   id: string;
   name: string;
   status: 'accepted' | 'declined' | 'pending';
+  sent?: boolean;
 }
 
 interface DateScale {
@@ -49,14 +50,14 @@ export default function PlanilhaEscalasScreen() {
       eventName: 'Culto Dominical',
       positions: {
         'Vocal': [
-          { id: '1', name: 'João Silva', status: 'accepted' },
-          { id: '2', name: 'Maria Santos', status: 'pending' }
+          { id: '1', name: 'João Silva', status: 'accepted', sent: true },
+          { id: '2', name: 'Maria Santos', status: 'pending', sent: false }
         ],
         'Guitarra': [
-          { id: '3', name: 'Pedro Costa', status: 'accepted' }
+          { id: '3', name: 'Pedro Costa', status: 'accepted', sent: false }
         ],
         'Bateria': [
-          { id: '4', name: 'Ana Lima', status: 'declined' }
+          { id: '4', name: 'Ana Lima', status: 'declined', sent: false }
         ],
         'Teclado': [],
         'Baixo': []
@@ -68,12 +69,12 @@ export default function PlanilhaEscalasScreen() {
       eventName: 'Culto de Quarta',
       positions: {
         'Vocal': [
-          { id: '5', name: 'Carlos Mendes', status: 'pending' }
+          { id: '5', name: 'Carlos Mendes', status: 'pending', sent: false }
         ],
         'Guitarra': [],
         'Bateria': [],
         'Teclado': [
-          { id: '2', name: 'Maria Santos', status: 'accepted' }
+          { id: '2', name: 'Maria Santos', status: 'accepted', sent: false }
         ],
         'Baixo': []
       }
@@ -176,11 +177,11 @@ export default function PlanilhaEscalasScreen() {
     if (!dateScale) return;
     
     setSelectedDateForSend(dateScale);
-    // Pré-selecionar todos os membros
+    // Pré-selecionar apenas membros não enviados
     const allMembers: string[] = [];
     Object.values(dateScale.positions).forEach(members => {
       members.forEach(member => {
-        if (!allMembers.includes(member.id)) {
+        if (!member.sent && !allMembers.includes(member.id)) {
           allMembers.push(member.id);
         }
       });
@@ -204,7 +205,7 @@ export default function PlanilhaEscalasScreen() {
     const allMembers: string[] = [];
     Object.values(selectedDateForSend.positions).forEach(members => {
       members.forEach(member => {
-        if (!allMembers.includes(member.id)) {
+        if (!member.sent && !allMembers.includes(member.id)) {
           allMembers.push(member.id);
         }
       });
@@ -219,21 +220,36 @@ export default function PlanilhaEscalasScreen() {
   const sendSelectedMembers = () => {
     if (!selectedDateForSend || selectedMembersToSend.length === 0) return;
     
+    const confirmSend = () => {
+      // Marcar membros como enviados
+      setScaleData(prev => prev.map(dateScale => {
+        if (dateScale.id === selectedDateForSend.id) {
+          const updatedPositions = { ...dateScale.positions };
+          Object.keys(updatedPositions).forEach(position => {
+            updatedPositions[position] = updatedPositions[position].map(member => {
+              if (selectedMembersToSend.includes(member.id)) {
+                return { ...member, sent: true };
+              }
+              return member;
+            });
+          });
+          return { ...dateScale, positions: updatedPositions };
+        }
+        return dateScale;
+      }));
+      console.log('Escala enviada para:', selectedMembersToSend);
+      setShowSendModal(false);
+    };
+    
     if (Platform.OS === 'web') {
-      console.log('Enviando para membros:', selectedMembersToSend);
+      confirmSend();
     } else {
       Alert.alert(
         'Enviar Escala',
         `Enviar convites para ${selectedMembersToSend.length} membro(s) em ${selectedDateForSend.date}?`,
         [
           { text: 'Cancelar', style: 'cancel' },
-          { 
-            text: 'Enviar', 
-            onPress: () => {
-              console.log('Escala enviada para:', selectedMembersToSend);
-              setShowSendModal(false);
-            }
-          }
+          { text: 'Enviar', onPress: confirmSend }
         ]
       );
     }
@@ -386,11 +402,12 @@ export default function PlanilhaEscalasScreen() {
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false} style={styles.sendMembersList}>
-              {selectedDateForSend && Object.entries(selectedDateForSend.positions).map(([position, members]) => (
-                members.length > 0 && (
+              {selectedDateForSend && Object.entries(selectedDateForSend.positions).map(([position, members]) => {
+                const unsentMembers = members.filter(m => !m.sent);
+                return unsentMembers.length > 0 && (
                   <View key={position} style={styles.sendPositionGroup}>
                     <Text style={styles.sendPositionTitle}>{position}</Text>
-                    {members.map((member) => (
+                    {unsentMembers.map((member) => (
                       <TouchableOpacity
                         key={member.id}
                         style={styles.sendMemberOption}
@@ -402,7 +419,7 @@ export default function PlanilhaEscalasScreen() {
                             selectedMembersToSend.includes(member.id) && styles.checkboxChecked
                           ]}>
                             {selectedMembersToSend.includes(member.id) && (
-                              <MaterialIcons name="check" size={16} color="#FFFFFF" />
+                              <MaterialIcons name="check" size={18} color="#FFFFFF" />
                             )}
                           </View>
                         </View>
@@ -415,20 +432,11 @@ export default function PlanilhaEscalasScreen() {
                           <Text style={styles.memberOptionName}>{member.name}</Text>
                           <Text style={styles.memberRole}>{position}</Text>
                         </View>
-                        <View style={[
-                          styles.statusBadge,
-                          { backgroundColor: getStatusColor(member.status) }
-                        ]}>
-                          <Text style={styles.statusBadgeText}>
-                            {member.status === 'accepted' ? 'Aceito' : 
-                             member.status === 'declined' ? 'Recusado' : 'Pendente'}
-                          </Text>
-                        </View>
                       </TouchableOpacity>
                     ))}
                   </View>
-                )
-              ))}
+                );
+              })}
             </ScrollView>
 
             <View style={styles.sendModalFooter}>
@@ -757,23 +765,23 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   memberAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     backgroundColor: '#10B981',
     justifyContent: 'center',
     alignItems: 'center',
   },
   memberInitial: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '700',
   },
   memberInfo: {
     flex: 1,
   },
   memberOptionName: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
     color: '#1E293B',
   },
@@ -839,19 +847,19 @@ const styles = StyleSheet.create({
   sendMemberOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 12,
     backgroundColor: '#F8FAFC',
     borderRadius: 8,
-    marginBottom: 8,
+    marginBottom: 6,
     gap: 12,
   },
   checkboxContainer: {
     marginRight: 4,
   },
   checkbox: {
-    width: 22,
-    height: 22,
+    width: 24,
+    height: 24,
     borderRadius: 6,
     borderWidth: 2,
     borderColor: '#CBD5E1',
@@ -863,16 +871,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#10B981',
     borderColor: '#10B981',
   },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statusBadgeText: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
+
   sendModalFooter: {
     marginTop: 16,
     paddingTop: 16,
