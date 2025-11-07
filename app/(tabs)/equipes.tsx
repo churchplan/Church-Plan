@@ -214,9 +214,18 @@ export default function EquipesScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.title}>Equipes</Text>
-          <Text style={styles.subtitle}>Gerencie equipes e membros</Text>
+        <View style={styles.headerTop}>
+          <View style={styles.headerLeft}>
+            <Text style={styles.title}>Equipes</Text>
+            <Text style={styles.subtitle}>Gerencie equipes e membros</Text>
+          </View>
+          <TouchableOpacity 
+            style={styles.scoreButtonSmall}
+            onPress={() => router.push('/pontuacoes-equipe')}
+          >
+            <MaterialIcons name="emoji-events" size={18} color="#FFFFFF" />
+            <Text style={styles.scoreButtonSmallText}>Pontuações</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.createTeamButton} onPress={() => setShowCreateTeamModal(true)}>
@@ -229,16 +238,6 @@ export default function EquipesScreen() {
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* Botão Ver Pontuações */}
-      <TouchableOpacity 
-        style={styles.scoreButton}
-        onPress={() => router.push('/pontuacoes-equipe')}
-      >
-        <MaterialIcons name="emoji-events" size={24} color="#FFFFFF" />
-        <Text style={styles.scoreButtonText}>Ver Pontuações da Equipe</Text>
-        <MaterialIcons name="arrow-forward" size={20} color="#FFFFFF" />
-      </TouchableOpacity>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Search Bar */}
@@ -602,6 +601,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E2E8F0',
   },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  headerLeft: {
+    flex: 1,
+  },
   title: {
     fontSize: 28,
     fontWeight: '700',
@@ -611,7 +619,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#64748B',
     marginTop: 2,
-    marginBottom: 16,
   },
   headerActions: {
     flexDirection: 'row',
@@ -1041,28 +1048,23 @@ const styles = StyleSheet.create({
   emptySpace: {
     height: 100,
   },
-  scoreButton: {
+  scoreButtonSmall: {
     backgroundColor: '#F59E0B',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    marginTop: 16,
-    marginBottom: 8,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 16,
-    gap: 12,
-    elevation: 3,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+    gap: 6,
+    elevation: 2,
     shadowColor: '#F59E0B',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
-  scoreButtonText: {
+  scoreButtonSmallText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
-    flex: 1,
+    fontSize: 13,
+    fontWeight: '600',
   },
 });
