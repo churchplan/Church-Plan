@@ -13,6 +13,7 @@ interface ScaleMember {
 interface DateScale {
   id: string;
   date: string;
+  eventName: string;
   positions: {
     [key: string]: ScaleMember[];
   };
@@ -42,6 +43,7 @@ export default function PlanilhaEscalasScreen() {
     {
       id: '1',
       date: '07/09/2024',
+      eventName: 'Culto Dominical',
       positions: {
         'Vocal': [
           { id: '1', name: 'João Silva', status: 'accepted' },
@@ -60,6 +62,7 @@ export default function PlanilhaEscalasScreen() {
     {
       id: '2',
       date: '14/09/2024',
+      eventName: 'Culto de Quarta',
       positions: {
         'Vocal': [
           { id: '5', name: 'Carlos Mendes', status: 'pending' }
@@ -75,6 +78,7 @@ export default function PlanilhaEscalasScreen() {
     {
       id: '3',
       date: '21/09/2024',
+      eventName: 'Culto Dominical',
       positions: {
         'Vocal': [],
         'Guitarra': [],
@@ -86,6 +90,7 @@ export default function PlanilhaEscalasScreen() {
     {
       id: '4',
       date: '28/09/2024',
+      eventName: 'Culto Jovem',
       positions: {
         'Vocal': [],
         'Guitarra': [],
@@ -238,6 +243,7 @@ export default function PlanilhaEscalasScreen() {
                 {/* Coluna de Data */}
                 <View style={[styles.tableCell, styles.dateCell]}>
                   <Text style={styles.dateText}>{dateScale.date}</Text>
+                  <Text style={styles.eventNameText} numberOfLines={2}>{dateScale.eventName}</Text>
                   <TouchableOpacity 
                     style={styles.sendDateButton}
                     onPress={() => sendScaleToDate(dateScale.id, dateScale.date)}
@@ -488,6 +494,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1E293B',
     textAlign: 'center',
+  },
+  eventNameText: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: '#64748B',
+    textAlign: 'center',
+    marginTop: 2,
   },
   membersContainer: {
     gap: 6,
