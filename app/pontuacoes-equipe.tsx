@@ -20,7 +20,8 @@ export default function PontuacoesEquipeScreen() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTeam, setSelectedTeam] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'points' | 'checkins' | 'accepted'>('points');
+  const [selectedSubgroup, setSelectedSubgroup] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'points_desc' | 'points_asc' | 'checkins_desc' | 'checkins_asc' | 'accepted_desc' | 'accepted_asc'>('points_desc');
 
   // Mock de dados de pontuação
   const membersScores: MemberScore[] = [
@@ -97,6 +98,22 @@ export default function PontuacoesEquipeScreen() {
   ];
 
   const teams = ['all', 'Ministério de Louvor', 'Equipe Técnica', 'Ministração'];
+  
+  // Subgrupos baseados na equipe selecionada
+  const getSubgroupsForTeam = (team: string) => {
+    switch (team) {
+      case 'Ministério de Louvor':
+        return ['all', 'Vocal', 'Guitarra', 'Bateria', 'Teclado', 'Baixo'];
+      case 'Equipe Técnica':
+        return ['all', 'Som', 'Vídeo', 'Iluminação', 'Transmissão'];
+      case 'Ministração':
+        return ['all', 'Pastor', 'Pregador', 'Intercessão'];
+      default:
+        return ['all'];
+    }
+  };
+  
+  const availableSubgroups = getSubgroupsForTeam(selectedTeam);
 
   const filteredMembers = membersScores
     .filter(member => {
@@ -104,16 +121,23 @@ export default function PontuacoesEquipeScreen() {
         member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         member.subgroup.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesTeam = selectedTeam === 'all' || member.team === selectedTeam;
-      return matchesSearch && matchesTeam;
+      const matchesSubgroup = selectedSubgroup === 'all' || member.subgroup === selectedSubgroup;
+      return matchesSearch && matchesTeam && matchesSubgroup;
     })
     .sort((a, b) => {
       switch (sortBy) {
-        case 'points':
+        case 'points_desc':
           return b.totalPoints - a.totalPoints;
-        case 'checkins':
+        case 'points_asc':
+          return a.totalPoints - b.totalPoints;
+        case 'checkins_desc':
           return b.checkins - a.checkins;
-        case 'accepted':
+        case 'checkins_asc':
+          return a.checkins - b.checkins;
+        case 'accepted_desc':
           return b.acceptedScales - a.acceptedScales;
+        case 'accepted_asc':
+          return a.acceptedScales - b.acceptedScales;
         default:
           return 0;
       }
@@ -194,54 +218,151 @@ export default function PontuacoesEquipeScreen() {
             ))}
           </ScrollView>
 
-          {/* Sort Options */}
-          <View style={styles.sortContainer}>
-            <Text style={styles.sortLabel}>Ordenar por:</Text>
-            <View style={styles.sortButtons}>
-              <TouchableOpacity
-                style={[styles.sortButton, sortBy === 'points' && styles.sortButtonActive]}
-                onPress={() => setSortBy('points')}
-              >
-                <MaterialIcons 
-                  name="emoji-events" 
-                  size={16} 
-                  color={sortBy === 'points' ? '#FFFFFF' : '#64748B'} 
-                />
-                <Text style={[
-                  styles.sortButtonText,
-                  sortBy === 'points' && styles.sortButtonTextActive
-                ]}>Pontos</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={[styles.sortButton, sortBy === 'checkins' && styles.sortButtonActive]}
-                onPress={() => setSortBy('checkins')}
-              >
-                <MaterialIcons 
-                  name="check-circle" 
-                  size={16} 
-                  color={sortBy === 'checkins' ? '#FFFFFF' : '#64748B'} 
-                />
-                <Text style={[
-                  styles.sortButtonText,
-                  sortBy === 'checkins' && styles.sortButtonTextActive
-                ]}>Check-ins</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={[styles.sortButton, sortBy === 'accepted' && styles.sortButtonActive]}
-                onPress={() => setSortBy('accepted')}
-              >
-                <MaterialIcons 
-                  name="thumb-up" 
-                  size={16} 
-                  color={sortBy === 'accepted' ? '#FFFFFF' : '#64748B'} 
-                />
-                <Text style={[
-                  styles.sortButtonText,
-                  sortBy === 'accepted' && styles.sortButtonTextActive
-                ]}>Aceitou</Text>
-              </TouchableOpacity>
+          {/* Filtros Inteligentes */}
+          <View style={styles.filterContainer}>
+            <View style={styles.filterHeader}>
+              <MaterialIcons name="filter-list" size={20} color="#1E293B" />
+              <Text style={styles.filterTitle}>Filtros</Text>
+            </View>
+
+            {/* Subgrupos/Posições */}
+            {selectedTeam !== 'all' && availableSubgroups.length > 1 && (
+              <View style={styles.filterSection}>
+                <Text style={styles.filterLabel}>Posição:</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterOptions}>
+                  {availableSubgroups.map((subgroup) => (
+                    <TouchableOpacity
+                      key={subgroup}
+                      style={[
+                        styles.filterChip,
+                        selectedSubgroup === subgroup && styles.filterChipActive
+                      ]}
+                      onPress={() => setSelectedSubgroup(subgroup)}
+                    >
+                      <Text style={[
+                        styles.filterChipText,
+                        selectedSubgroup === subgroup && styles.filterChipTextActive
+                      ]}>
+                        {subgroup === 'all' ? 'Todas' : subgroup}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
+            {/* Ordenação */}
+            <View style={styles.filterSection}>
+              <Text style={styles.filterLabel}>Ordenar:</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterOptions}>
+                <TouchableOpacity
+                  style={[
+                    styles.filterChip,
+                    sortBy === 'points_desc' && styles.filterChipActive
+                  ]}
+                  onPress={() => setSortBy('points_desc')}
+                >
+                  <MaterialIcons 
+                    name="arrow-downward" 
+                    size={14} 
+                    color={sortBy === 'points_desc' ? '#FFFFFF' : '#64748B'} 
+                  />
+                  <Text style={[
+                    styles.filterChipText,
+                    sortBy === 'points_desc' && styles.filterChipTextActive
+                  ]}>Mais Pontos</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                  style={[
+                    styles.filterChip,
+                    sortBy === 'points_asc' && styles.filterChipActive
+                  ]}
+                  onPress={() => setSortBy('points_asc')}
+                >
+                  <MaterialIcons 
+                    name="arrow-upward" 
+                    size={14} 
+                    color={sortBy === 'points_asc' ? '#FFFFFF' : '#64748B'} 
+                  />
+                  <Text style={[
+                    styles.filterChipText,
+                    sortBy === 'points_asc' && styles.filterChipTextActive
+                  ]}>Menos Pontos</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.filterChip,
+                    sortBy === 'checkins_desc' && styles.filterChipActive
+                  ]}
+                  onPress={() => setSortBy('checkins_desc')}
+                >
+                  <MaterialIcons 
+                    name="arrow-downward" 
+                    size={14} 
+                    color={sortBy === 'checkins_desc' ? '#FFFFFF' : '#64748B'} 
+                  />
+                  <Text style={[
+                    styles.filterChipText,
+                    sortBy === 'checkins_desc' && styles.filterChipTextActive
+                  ]}>Mais Check-ins</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.filterChip,
+                    sortBy === 'checkins_asc' && styles.filterChipActive
+                  ]}
+                  onPress={() => setSortBy('checkins_asc')}
+                >
+                  <MaterialIcons 
+                    name="arrow-upward" 
+                    size={14} 
+                    color={sortBy === 'checkins_asc' ? '#FFFFFF' : '#64748B'} 
+                  />
+                  <Text style={[
+                    styles.filterChipText,
+                    sortBy === 'checkins_asc' && styles.filterChipTextActive
+                  ]}>Menos Check-ins</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.filterChip,
+                    sortBy === 'accepted_desc' && styles.filterChipActive
+                  ]}
+                  onPress={() => setSortBy('accepted_desc')}
+                >
+                  <MaterialIcons 
+                    name="arrow-downward" 
+                    size={14} 
+                    color={sortBy === 'accepted_desc' ? '#FFFFFF' : '#64748B'} 
+                  />
+                  <Text style={[
+                    styles.filterChipText,
+                    sortBy === 'accepted_desc' && styles.filterChipTextActive
+                  ]}>Mais Aceites</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.filterChip,
+                    sortBy === 'accepted_asc' && styles.filterChipActive
+                  ]}
+                  onPress={() => setSortBy('accepted_asc')}
+                >
+                  <MaterialIcons 
+                    name="arrow-upward" 
+                    size={14} 
+                    color={sortBy === 'accepted_asc' ? '#FFFFFF' : '#64748B'} 
+                  />
+                  <Text style={[
+                    styles.filterChipText,
+                    sortBy === 'accepted_asc' && styles.filterChipTextActive
+                  ]}>Menos Aceites</Text>
+                </TouchableOpacity>
+              </ScrollView>
             </View>
           </View>
         </View>
@@ -349,7 +470,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 12,
     backgroundColor: '#F59E0B',
   },
   backButton: {
@@ -420,46 +541,58 @@ const styles = StyleSheet.create({
   teamFilterTextActive: {
     color: '#FFFFFF',
   },
-  sortContainer: {
+  filterContainer: {
     backgroundColor: '#FFFFFF',
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E2E8F0',
   },
-  sortLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#64748B',
-    marginBottom: 12,
-  },
-  sortButtons: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  sortButton: {
-    flex: 1,
+  filterHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
+    gap: 8,
+    marginBottom: 16,
+  },
+  filterTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1E293B',
+  },
+  filterSection: {
+    marginBottom: 12,
+  },
+  filterLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#64748B',
+    marginBottom: 8,
+  },
+  filterOptions: {
+    flexDirection: 'row',
+  },
+  filterChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: 20,
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#E2E8F0',
-    gap: 6,
+    marginRight: 8,
+    gap: 4,
   },
-  sortButtonActive: {
+  filterChipActive: {
     backgroundColor: '#6366F1',
     borderColor: '#6366F1',
   },
-  sortButtonText: {
-    fontSize: 12,
+  filterChipText: {
+    fontSize: 13,
     fontWeight: '600',
     color: '#64748B',
   },
-  sortButtonTextActive: {
+  filterChipTextActive: {
     color: '#FFFFFF',
   },
   rankingSection: {
