@@ -206,7 +206,10 @@ export default function PontuacoesEquipeScreen() {
                   styles.teamFilterButton,
                   selectedTeam === team && styles.teamFilterButtonActive
                 ]}
-                onPress={() => setSelectedTeam(team)}
+                onPress={() => {
+                  setSelectedTeam(team);
+                  setSelectedSubgroup('all'); // Reset subgrupo ao trocar equipe
+                }}
               >
                 <Text style={[
                   styles.teamFilterText,
