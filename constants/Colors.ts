@@ -1,26 +1,26 @@
 // Church Helper - Identidade Visual
 export const Colors = {
-  // Cores Primárias da Marca
+  // Cores Primárias da Marca (Paleta Oficial)
   primary: {
-    teal: '#00D4AA',        // Verde/Turquesa principal
+    teal: '#1CE5C0',        // Verde/Turquesa principal
     blue: '#5DBBF5',        // Azul médio
-    navy: '#1E5A7D',        // Azul escuro/petróleo
+    navy: '#2B6B8F',        // Azul escuro/petróleo
     white: '#F5FCFF',       // Branco off-white
   },
 
   // Gradientes da Marca
   gradients: {
-    primary: ['#00D4AA', '#5DBBF5'],     // Teal para Azul
-    secondary: ['#5DBBF5', '#1E5A7D'],    // Azul para Navy
-    header: ['#1E5A7D', '#5DBBF5'],       // Navy para Azul (headers)
+    primary: ['#1CE5C0', '#5DBBF5'],     // Teal para Azul
+    secondary: ['#5DBBF5', '#2B6B8F'],    // Azul para Navy
+    header: ['#2B6B8F', '#5DBBF5'],       // Navy para Azul (headers)
   },
 
   // Sistema de Cores Funcionais
   background: {
     primary: '#F5FCFF',       // Fundo principal
     secondary: '#FFFFFF',     // Cards e containers
-    tertiary: '#F0F9FF',      // Fundo sutil
-    overlay: 'rgba(30, 90, 125, 0.9)', // Overlay modals
+    tertiary: '#E8FFFE',      // Fundo sutil com teal
+    overlay: 'rgba(43, 107, 143, 0.9)', // Overlay modals
   },
 
   text: {
@@ -32,9 +32,9 @@ export const Colors = {
   },
 
   accent: {
-    teal: '#00D4AA',         // Botões e ações principais
+    teal: '#1CE5C0',         // Botões e ações principais
     blue: '#5DBBF5',         // Links e elementos interativos
-    navy: '#1E5A7D',         // Headers e navegação
+    navy: '#2B6B8F',         // Headers e navegação
   },
 
   status: {
@@ -55,12 +55,12 @@ export const Colors = {
 
   // Estados dos Componentes
   button: {
-    primary: '#00D4AA',
-    primaryHover: '#00B894',
+    primary: '#1CE5C0',
+    primaryHover: '#15C9A8',
     secondary: '#5DBBF5',
     secondaryHover: '#3A9FE0',
-    tertiary: '#1E5A7D',
-    tertiaryHover: '#164568',
+    tertiary: '#2B6B8F',
+    tertiaryHover: '#1F5470',
     disabled: '#CBD5E1',
   },
 
@@ -71,7 +71,7 @@ export const Colors = {
   },
 
   tab: {
-    active: '#1E5A7D',
+    active: '#1CE5C0',
     inactive: '#64748B',
     background: '#FFFFFF',
     border: '#F1F5F9',

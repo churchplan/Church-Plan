@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#10B981',
+    backgroundColor: '#1CE5C0',
   },
   backButton: {
     padding: 8,
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
   autoFillButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#6366F1',
+    backgroundColor: '#5DBBF5',
     paddingHorizontal: 8,
     paddingVertical: 5,
     borderRadius: 6,
@@ -596,9 +596,9 @@ const styles = StyleSheet.create({
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#1E293B',
+    backgroundColor: '#2B6B8F',
     borderBottomWidth: 2,
-    borderBottomColor: '#00D4AA',
+    borderBottomColor: '#1CE5C0',
   },
   tableBody: {
     flex: 1,
@@ -616,12 +616,12 @@ const styles = StyleSheet.create({
   },
   dateCellHeader: {
     width: 110,
-    backgroundColor: '#1E293B',
+    backgroundColor: '#2B6B8F',
     justifyContent: 'center',
   },
   positionCellHeader: {
     width: 140,
-    backgroundColor: '#1E293B',
+    backgroundColor: '#2B6B8F',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -636,7 +636,7 @@ const styles = StyleSheet.create({
   sendDateButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#10B981',
+    backgroundColor: '#1CE5C0',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
@@ -697,18 +697,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F0FDF4',
+    backgroundColor: '#E8FFFE',
     paddingVertical: 6,
     paddingHorizontal: 6,
     borderRadius: 4,
     gap: 3,
     borderWidth: 1,
-    borderColor: '#10B981',
+    borderColor: '#1CE5C0',
     borderStyle: 'dashed',
   },
   addButtonText: {
     fontSize: 10,
-    color: '#10B981',
+    color: '#1CE5C0',
     fontWeight: '600',
   },
   modalOverlay: {
@@ -768,7 +768,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#10B981',
+    backgroundColor: '#1CE5C0',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -791,12 +791,12 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   sendModalInfo: {
-    backgroundColor: '#F0FDF4',
+    backgroundColor: '#E8FFFE',
     padding: 16,
     borderRadius: 8,
     marginBottom: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#10B981',
+    borderLeftColor: '#1CE5C0',
   },
   sendModalDate: {
     fontSize: 18,
@@ -868,8 +868,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxChecked: {
-    backgroundColor: '#10B981',
-    borderColor: '#10B981',
+    backgroundColor: '#1CE5C0',
+    borderColor: '#1CE5C0',
   },
 
   sendModalFooter: {
@@ -889,7 +889,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#10B981',
+    backgroundColor: '#1CE5C0',
     paddingVertical: 14,
     borderRadius: 8,
     gap: 8,

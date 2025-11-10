@@ -312,7 +312,7 @@ export default function EquipesScreen() {
                           <Text style={styles.badgeText}>{getAdminTypeText(member.adminType)}</Text>
                         </View>
                       )}
-                      <View style={[styles.badge, { backgroundColor: member.active ? '#10B981' : '#94A3B8' }]}>
+                      <View style={[styles.badge, { backgroundColor: member.active ? '#1CE5C0' : '#94A3B8' }]}>
                         <Text style={styles.badgeText}>{member.active ? 'Ativo' : 'Inativo'}</Text>
                       </View>
                     </View>
@@ -625,7 +625,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   createTeamButton: {
-    backgroundColor: '#6366F1',
+    backgroundColor: '#5DBBF5',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -636,7 +636,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addMemberButton: {
-    backgroundColor: '#10B981',
+    backgroundColor: '#1CE5C0',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -795,7 +795,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   adminBadge: {
-    backgroundColor: '#6366F1',
+    backgroundColor: '#5DBBF5',
   },
   badgeText: {
     color: '#FFFFFF',
@@ -869,7 +869,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   addSubgroupText: {
-    color: '#10B981',
+    color: '#1CE5C0',
     fontSize: 14,
     fontWeight: '500',
   },
@@ -901,8 +901,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   adminTypeOptionSelected: {
-    backgroundColor: '#EEF2FF',
-    borderColor: '#6366F1',
+    backgroundColor: '#E8FFFE',
+    borderColor: '#1CE5C0',
   },
   adminTypeInfo: {
     flex: 1,
@@ -913,7 +913,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   adminTypeLabelSelected: {
-    color: '#6366F1',
+    color: '#1CE5C0',
     fontWeight: '600',
   },
   adminTypeDesc: {
@@ -922,7 +922,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   createButton: {
-    backgroundColor: '#10B981',
+    backgroundColor: '#1CE5C0',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -950,21 +950,21 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   selectedPositionContainer: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: '#E8FFFE',
     padding: 12,
     borderRadius: 8,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#6366F1',
+    borderColor: '#1CE5C0',
   },
   selectedPositionTeam: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#6366F1',
+    color: '#1CE5C0',
   },
   selectedPositionFunction: {
     fontSize: 14,
-    color: '#4F46E5',
+    color: '#15C9A8',
     marginTop: 2,
   },
   selectPositionLabel: {
@@ -1020,7 +1020,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#F1F5F9',
   },
   functionItemSelected: {
-    backgroundColor: '#6366F1',
+    backgroundColor: '#1CE5C0',
   },
   functionText: {
     fontSize: 14,
@@ -1032,7 +1032,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   addPositionButton: {
-    backgroundColor: '#6366F1',
+    backgroundColor: '#1CE5C0',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1049,7 +1049,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   scoreButtonSmall: {
-    backgroundColor: '#F59E0B',
+    backgroundColor: '#1CE5C0',
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
@@ -1057,7 +1057,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     gap: 6,
     elevation: 2,
-    shadowColor: '#F59E0B',
+    shadowColor: '#1CE5C0',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,

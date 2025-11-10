@@ -59,14 +59,14 @@ export default function MinhaAgendaScreen() {
       id: '1',
       name: 'Church Helper',
       icon: 'church',
-      color: '#00D4AA',
+      color: '#1CE5C0',
       description: 'Organização de cultos e equipes'
     },
     {
       id: '2',
       name: 'Finance',
       icon: 'account-balance',
-      color: '#4A90E2',
+      color: '#5DBBF5',
       description: 'Gestão financeira da igreja'
     },
     {
@@ -80,7 +80,7 @@ export default function MinhaAgendaScreen() {
       id: '4',
       name: 'School',
       icon: 'school',
-      color: '#2E5984',
+      color: '#2B6B8F',
       description: 'Escola bíblica dominical'
     }
   ];
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#00D4AA',
+    backgroundColor: '#1CE5C0',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 6,
@@ -559,7 +559,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#2E5984',
+    backgroundColor: '#2B6B8F',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -644,7 +644,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F0FDF4',
+    backgroundColor: '#E8FFFE',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -666,12 +666,12 @@ const styles = StyleSheet.create({
   },
   eventDate: {
     fontSize: 13,
-    color: '#4A90E2',
+    color: '#5DBBF5',
     fontWeight: '500',
   },
   eventRole: {
     fontSize: 13,
-    color: '#00D4AA',
+    color: '#1CE5C0',
     fontWeight: '500',
   },
   eventActions: {
@@ -701,7 +701,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#F1F5F9',
   },
   confirmButton: {
-    backgroundColor: '#00D4AA',
+    backgroundColor: '#1CE5C0',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -944,7 +944,7 @@ const styles = StyleSheet.create({
     right: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F0FDF4',
+    backgroundColor: '#E8FFFE',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 8,
@@ -953,7 +953,7 @@ const styles = StyleSheet.create({
   currentAppText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#00D4AA',
+    color: '#1CE5C0',
   },
   dateOptions: {
     gap: 8,
@@ -1110,7 +1110,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    backgroundColor: '#00D4AA',
+    backgroundColor: '#1CE5C0',
   },
   blockConfirmText: {
     fontSize: 16,

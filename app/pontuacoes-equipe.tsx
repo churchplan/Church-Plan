@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: '#F59E0B',
+    backgroundColor: '#1CE5C0',
   },
   backButton: {
     padding: 8,
@@ -533,8 +533,8 @@ const styles = StyleSheet.create({
     borderColor: '#E2E8F0',
   },
   teamFilterButtonActive: {
-    backgroundColor: '#00D4AA',
-    borderColor: '#00D4AA',
+    backgroundColor: '#1CE5C0',
+    borderColor: '#1CE5C0',
   },
   teamFilterText: {
     fontSize: 14,
@@ -587,8 +587,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   filterChipActive: {
-    backgroundColor: '#6366F1',
-    borderColor: '#6366F1',
+    backgroundColor: '#5DBBF5',
+    borderColor: '#5DBBF5',
   },
   filterChipText: {
     fontSize: 13,
